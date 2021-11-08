@@ -44,24 +44,19 @@ public class Main implements Runnable{
 	public void run() {
 		JFrame frame = new JFrame("Calendar");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.add(createTopPanel(), BorderLayout.BEFORE_FIRST_LINE);
+		frame.add(createTitlePanel(), BorderLayout.NORTH);
 		frame.add(createCalendarPanel(), BorderLayout.CENTER);
-		frame.pack();
+		//frame.pack();
                 frame.setSize(750, 750);
                 frame.setResizable(false);
-		frame.setLocationByPlatform(true);
+		//frame.setLocationByPlatform(true);
 		frame.setVisible(true);
-	}
-	private JPanel createTopPanel() {
-		JPanel panel = new JPanel(new BorderLayout());
-		//panel.add(createDatePanel(), BorderLayout.BEFORE_FIRST_LINE);
-		panel.add(createTitlePanel(), BorderLayout.AFTER_LAST_LINE);
-		return panel;
 	}
 	
 	
 	private JPanel createTitlePanel() {
 		JPanel panel = new JPanel();
+                panel.setLayout(new GridLayout(1,6));
 		Font font = panel.getFont().deriveFont(40f).deriveFont(Font.BOLD);
 		titleLabel = new JLabel(" ");
 		titleLabel.setFont(font);
@@ -84,7 +79,7 @@ public class Main implements Runnable{
 				updateDayLabels();
 			}
 		});
-		panel.add(previousMonthButton);
+		
 		monthComboBox = new JComboBox<>(MONTH_NAMES);
 		
 		monthComboBox.setSelectedIndex(calendarDate.getMonth().ordinal());
@@ -108,11 +103,18 @@ public class Main implements Runnable{
 				updateDayLabels();
 			}
 		});
-                JButton print = new JButton();
-                print.setText("Print to pdf");
+                JButton print = new JButton("Print to pdf");
+                
+                print.setPreferredSize(new Dimension(150,40));
+                
+                
+                
+                 panel.add(previousMonthButton);
                 panel.add(titleLabel);
                 panel.add(nextMonthButton);
+                
                 panel.add(print);
+               
 		return panel;
 	}
 	private JPanel createCalendarPanel() {
@@ -132,7 +134,7 @@ public class Main implements Runnable{
 		Font dayNamesFont = panel.getFont().deriveFont(12f);
 		for (int i = 0; i < 7 ; i++) {
 			JPanel dayPanel = new JPanel(new BorderLayout());
-			dayPanel.setPreferredSize(new Dimension(20, 40));
+			dayPanel.setPreferredSize(new Dimension(20, 50));
 			JLabel label = new JLabel(DAY_NAMES[i]);
 			label.setFont(dayNamesFont);// font názvu dnù
                         
@@ -142,6 +144,7 @@ public class Main implements Runnable{
 		}
 		return panel;
 	}
+        //vytvoøení okýnek
 	private JPanel createDayLabels() {
 		JPanel panel = new JPanel(new GridLayout(0, DAY_NAMES.length , 5, 5));
 		dayLabell = new JButton[6][DAY_NAMES.length];
@@ -150,10 +153,11 @@ public class Main implements Runnable{
 			for (int i = 0; i < dayLabell[j].length; i++) {
 				JPanel dayPanel = new JPanel(new BorderLayout());
 				//dayPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3)); //ohranièení
-				dayPanel.setPreferredSize(new Dimension(120, 120)); //velikost 
+				dayPanel.setPreferredSize(new Dimension(50, 50)); //velikost 
 				dayLabell[j][i] = new JButton(" ");
 				dayLabell[j][i].setFont(dayFont);
-                                dayLabell[j][i].setBackground(Color.GRAY);
+                                dayLabell[j][i].setBackground(Color.LIGHT_GRAY);
+                                dayLabell[j][i].setForeground(backgroundColor.GRAY);
 				dayLabell[j][i].setHorizontalAlignment(JButton.CENTER);
 				dayPanel.add(dayLabell[j][i], BorderLayout.CENTER);
 				panel.add(dayPanel);
@@ -161,9 +165,11 @@ public class Main implements Runnable{
 		}
 		return panel;
 	}
+        //aktualizace datumu po pøepnutí
 	public void updateDayLabels() {
 		int month = monthComboBox.getSelectedIndex();
 		int day = valueOf(dayField.getText().trim());
+                
 		int year = valueOf(yearField.getText().trim());
 		if (year > 0 && day > 0) {
 			calendarDate = LocalDate.of(year, month + 1, day );
@@ -173,7 +179,7 @@ public class Main implements Runnable{
 			titleLabel.setText(title);
 		} 
 	}
-        //vyplnìní do správných okýn
+        //vyplnìní do správných okýnek
 	private LocalDate getPreviousSunday(int year, int month) {
 		LocalDate monthDate = LocalDate.of(year, month + 1, 1);
 		int weekday = monthDate.getDayOfWeek().ordinal();

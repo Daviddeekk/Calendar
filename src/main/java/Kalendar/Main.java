@@ -109,13 +109,10 @@ public class Main implements Runnable{
 			}
 		});
                 JButton print = new JButton();
-                
                 print.setText("Print to pdf");
-                
                 panel.add(titleLabel);
                 panel.add(nextMonthButton);
                 panel.add(print);
-                
 		return panel;
 	}
 	private JPanel createCalendarPanel() {
@@ -148,7 +145,6 @@ public class Main implements Runnable{
 	private JPanel createDayLabels() {
 		JPanel panel = new JPanel(new GridLayout(0, DAY_NAMES.length , 5, 5));
 		dayLabell = new JButton[6][DAY_NAMES.length];
-                
 		Font dayFont = panel.getFont().deriveFont(48f).deriveFont(Font.BOLD); 
 		for (int j = 0; j < dayLabell.length; j++) {
 			for (int i = 0; i < dayLabell[j].length; i++) {

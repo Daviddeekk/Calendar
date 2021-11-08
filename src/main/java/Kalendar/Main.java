@@ -116,11 +116,6 @@ public class Main implements Runnable{
                 panel.add(nextMonthButton);
                 panel.add(print);
                 
-                
-                
-                
-                
-                
 		return panel;
 	}
 	private JPanel createCalendarPanel() {

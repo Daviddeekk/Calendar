@@ -21,8 +21,8 @@ public class Main implements Runnable{
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Main());
 	}
-	private static final String[] DAY_NAMES = { "Sunday", "Monday", "Tuesday",
-			"Wednesday", "Thursday", "Friday", "Saturday" };
+	private static final String[] DAY_NAMES = { "Monday", "Tuesday",
+			"Wednesday", "Thursday", "Friday", "Saturday","Sunday" };
 	private static final String[] MONTH_NAMES = { "January", "February", 
 			"March", "April", "May", "June", "July",
 			"August", "September", "October", "November", "December" };
@@ -47,29 +47,29 @@ public class Main implements Runnable{
 		frame.add(createTopPanel(), BorderLayout.BEFORE_FIRST_LINE);
 		frame.add(createCalendarPanel(), BorderLayout.CENTER);
 		frame.pack();
+                frame.setSize(750, 750);
+                frame.setResizable(false);
 		frame.setLocationByPlatform(true);
 		frame.setVisible(true);
 	}
 	private JPanel createTopPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.add(createDatePanel(), BorderLayout.BEFORE_FIRST_LINE);
+		//panel.add(createDatePanel(), BorderLayout.BEFORE_FIRST_LINE);
 		panel.add(createTitlePanel(), BorderLayout.AFTER_LAST_LINE);
 		return panel;
 	}
-	private JPanel createDatePanel() {
-		JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-		Font font = panel.getFont().deriveFont(12f);
-		JButton previousYearButton = new JButton("<<");
-		previousYearButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				int year = Integer.valueOf(yearField.getText()) - 1;
-				yearField.setText(Integer.toString(year));
-				updateDayLabels();
-			}
-		});
-		panel.add(previousYearButton);
-		JButton previousMonthButton = new JButton("<");
+	
+	
+	private JPanel createTitlePanel() {
+		JPanel panel = new JPanel();
+		Font font = panel.getFont().deriveFont(40f).deriveFont(Font.BOLD);
+		titleLabel = new JLabel(" ");
+		titleLabel.setFont(font);
+                
+		
+                
+                
+                JButton previousMonthButton = new JButton("<");
 		previousMonthButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
@@ -86,22 +86,13 @@ public class Main implements Runnable{
 		});
 		panel.add(previousMonthButton);
 		monthComboBox = new JComboBox<>(MONTH_NAMES);
-		monthComboBox.setEditable(false);
-		monthComboBox.setFont(font);
+		
 		monthComboBox.setSelectedIndex(calendarDate.getMonth().ordinal());
-		panel.add(monthComboBox);
 		dayField = new JTextField(2);
-		//dayField.setFont(font);
 		dayField.setText(Integer.toString(calendarDate.getDayOfMonth()));
-		panel.add(dayField);
 		yearField = new JTextField(4);
-		yearField.setFont(font);
+		
 		yearField.setText(Integer.toString(calendarDate.getYear()));
-		panel.add(yearField);
-		JButton button = new JButton("Create Calendar");
-		button.addActionListener(new CalendarListener());
-		button.setFont(font);
-		panel.add(button);
 		JButton nextMonthButton = new JButton(">");
 		nextMonthButton.addActionListener(new ActionListener() {
 			@Override
@@ -117,25 +108,19 @@ public class Main implements Runnable{
 				updateDayLabels();
 			}
 		});
-		panel.add(nextMonthButton);
-		JButton nextYearButton = new JButton(">>");
-		nextYearButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				int year = Integer.valueOf(yearField.getText()) + 1;
-				yearField.setText(Integer.toString(year));
-				updateDayLabels();
-			}
-		});
-		panel.add(nextYearButton);
-		return panel;
-	}
-	private JPanel createTitlePanel() {
-		JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		Font font = panel.getFont().deriveFont(40f).deriveFont(Font.BOLD);
-		titleLabel = new JLabel(" ");
-		titleLabel.setFont(font);
-		panel.add(titleLabel);
+                JButton print = new JButton();
+                
+                print.setText("Print to pdf");
+                
+                panel.add(titleLabel);
+                panel.add(nextMonthButton);
+                panel.add(print);
+                
+                
+                
+                
+                
+                
 		return panel;
 	}
 	private JPanel createCalendarPanel() {
@@ -145,17 +130,20 @@ public class Main implements Runnable{
 		panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		panel.add(createWeekdayLabels(), BorderLayout.BEFORE_FIRST_LINE);
 		panel.add(createDayLabels(), BorderLayout.CENTER);
+                
 		updateDayLabels();
 		return panel;
 	}
 	private JPanel createWeekdayLabels() {
-		JPanel panel = new JPanel(new GridLayout(0, DAY_NAMES.length, 5, 5));
+		JPanel panel = new JPanel(new GridLayout(0, 7 , 5, 5));
+                
 		Font dayNamesFont = panel.getFont().deriveFont(12f);
-		for (int i = 0; i < DAY_NAMES.length; i++) {
+		for (int i = 0; i < 7 ; i++) {
 			JPanel dayPanel = new JPanel(new BorderLayout());
-			dayPanel.setPreferredSize(new Dimension(80, 40));
+			dayPanel.setPreferredSize(new Dimension(20, 40));
 			JLabel label = new JLabel(DAY_NAMES[i]);
-			label.setFont(dayNamesFont);
+			label.setFont(dayNamesFont);// font názvu dnù
+                        
 			label.setHorizontalAlignment(JLabel.CENTER);
 			dayPanel.add(label, BorderLayout.CENTER);
 			panel.add(dayPanel);
@@ -163,7 +151,7 @@ public class Main implements Runnable{
 		return panel;
 	}
 	private JPanel createDayLabels() {
-		JPanel panel = new JPanel(new GridLayout(0, DAY_NAMES.length, 5, 5));
+		JPanel panel = new JPanel(new GridLayout(0, DAY_NAMES.length , 5, 5));
 		dayLabell = new JButton[6][DAY_NAMES.length];
                 
 		Font dayFont = panel.getFont().deriveFont(48f).deriveFont(Font.BOLD); 
@@ -171,7 +159,7 @@ public class Main implements Runnable{
 			for (int i = 0; i < dayLabell[j].length; i++) {
 				JPanel dayPanel = new JPanel(new BorderLayout());
 				//dayPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3)); //ohranièení
-				//dayPanel.setPreferredSize(new Dimension(120, 120)); //velikost 
+				dayPanel.setPreferredSize(new Dimension(120, 120)); //velikost 
 				dayLabell[j][i] = new JButton(" ");
 				dayLabell[j][i].setFont(dayFont);
                                 dayLabell[j][i].setBackground(Color.GRAY);
@@ -187,21 +175,24 @@ public class Main implements Runnable{
 		int day = valueOf(dayField.getText().trim());
 		int year = valueOf(yearField.getText().trim());
 		if (year > 0 && day > 0) {
-			calendarDate = LocalDate.of(year, month + 1, day);
+			calendarDate = LocalDate.of(year, month + 1, day );
 			LocalDate monthDate = getPreviousSunday(year, month);
 			fillDays(monthDate, year, month, day);	
 			String title = MONTH_NAMES[month] + " " + year;
 			titleLabel.setText(title);
 		} 
 	}
+        //vyplnìní do správných okýn
 	private LocalDate getPreviousSunday(int year, int month) {
 		LocalDate monthDate = LocalDate.of(year, month + 1, 1);
 		int weekday = monthDate.getDayOfWeek().ordinal();
 		if (weekday < 6) {
-			monthDate = monthDate.minusDays((long) (weekday + 1));
+			monthDate = monthDate.minusDays((long) (weekday  ));
 		}
 		return monthDate;
 	}
+        
+        //vyplnìní okýnek datumem
 	private void fillDays(LocalDate monthDate, int year, int month, int day) {
 		for (int j = 0; j < dayLabell.length; j++) {
 			for (int i = 0; i < dayLabell[j].length; i++) {

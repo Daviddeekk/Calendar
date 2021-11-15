@@ -37,14 +37,19 @@ public class Main implements Runnable{
 	private JTextField dayField;
 	private JTextField yearField;
 	private LocalDate calendarDate;
+        public String monthh;
+        public int denn;
+        
 	public Main() {
 		this.calendarDate = LocalDate.now();
+                
+                
 	}
 	@Override
 	public void run() {
                 Poznamky poznamky = new Poznamky();
 		JFrame frame = new JFrame("Calendar");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.add(createTitlePanel(), BorderLayout.NORTH);
 		frame.add(createCalendarPanel(), BorderLayout.CENTER);
 		//frame.pack();
@@ -96,6 +101,7 @@ public class Main implements Runnable{
 			public void actionPerformed(ActionEvent event) {
 				int month = monthComboBox.getSelectedIndex();
 				month++;
+                                //èíslo mìsíce
 				if (month > 11) {
 					int year = Integer.valueOf(yearField.getText()) + 1;
 					yearField.setText(Integer.toString(year));
@@ -142,7 +148,7 @@ public class Main implements Runnable{
 			JPanel dayPanel = new JPanel(new BorderLayout());
 			dayPanel.setPreferredSize(new Dimension(20, 50));
 			JLabel label = new JLabel(DAY_NAMES[i]);
-			label.setFont(dayNamesFont);// font názvu dnù
+			label.setFont(dayNamesFont);// font názvu dn?
                         
 			label.setHorizontalAlignment(JLabel.CENTER);
 			dayPanel.add(label, BorderLayout.CENTER);
@@ -150,7 +156,7 @@ public class Main implements Runnable{
 		}
 		return panel;
 	}
-        //vytvoøení okýnek
+        //vytvo?ení okýnek
 	private JPanel createDayLabels() {
 		JPanel panel = new JPanel(new GridLayout(0, DAY_NAMES.length , 5, 5));
 		dayLabell = new JButton[6][DAY_NAMES.length];
@@ -158,33 +164,49 @@ public class Main implements Runnable{
 		for (int j = 0; j < dayLabell.length; j++) {
 			for (int i = 0; i < dayLabell[j].length; i++) {
 				JPanel dayPanel = new JPanel(new BorderLayout());
-				//dayPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3)); //ohranièení
+				//dayPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3)); //ohrani?ení
 				dayPanel.setPreferredSize(new Dimension(50, 50)); //velikost 
 				dayLabell[j][i] = new JButton(" ");
 				dayLabell[j][i].setFont(dayFont);
                                 dayLabell[j][i].setBackground(Color.LIGHT_GRAY);
                                 dayLabell[j][i].setForeground(backgroundColor.GRAY);
 				dayLabell[j][i].setHorizontalAlignment(JButton.CENTER);
-				dayPanel.add(dayLabell[j][i], BorderLayout.CENTER);
+				
                                 
                                 dayLabell[j][i].addActionListener(new ActionListener() {
                                 @Override
                                   public void actionPerformed(ActionEvent e) {
+                                    
+                                      JButton buttonn = (JButton) e.getSource(); 
+                                      String den = buttonn.getText();
                                       
-                                      
-                                String monthh = (String) monthComboBox.getSelectedItem();
+                                  
+                                 int year = valueOf(yearField.getText().trim());     
+                                 monthh = (String) monthComboBox.getSelectedItem();
+                                 int montt = monthComboBox.getSelectedIndex();
+                                
+                                 denn =Integer.parseInt(den); //int den
+                               //String dayy = dayLabell[j][i].get();
+                                
                                  
-                                System.out.println(monthh);
+                               
+                                System.out.println(denn);
+                                // System.out.println(dayy);
+                                System.out.println(monthh );
+                                System.out.println(year);
                                 Poznamky poznamky = new Poznamky();
                                 poznamky.setVisible(true);
-   }    //String den = (String) monthComboBox.getSelectedIndex();
-                                });       
+                                
+                                }    
+                                });  
+                                dayPanel.add(dayLabell[j][i], BorderLayout.CENTER);
 				panel.add(dayPanel);
 			}
 		}
+                
 		return panel;
 	}
-        //aktualizace datumu po pøepnutí
+        //aktualizace datumu po p?epnutí
 	public void updateDayLabels() {
 		int month = monthComboBox.getSelectedIndex();
 		int day = valueOf(dayField.getText().trim());
@@ -192,14 +214,16 @@ public class Main implements Runnable{
 		int year = valueOf(yearField.getText().trim());
 		if (year > 0 && day > 0) {
 			calendarDate = LocalDate.of(year, month + 1, day );
+                       //String xy =  calendarDate.toString();
+                       //System.out.println(xy);
 			LocalDate monthDate = getPreviousSunday(year, month);
 			fillDays(monthDate, year, month, day);	
 			String title = MONTH_NAMES[month] + " " + year;
 			titleLabel.setText(title);
-                        System.out.println(day);
+                      
 		} 
 	}
-        //vyplnìní do správných okýnek
+        //vypln?ní do správných okýnek
 	private LocalDate getPreviousSunday(int year, int month) {
 		LocalDate monthDate = LocalDate.of(year, month + 1, 1);
 		int weekday = monthDate.getDayOfWeek().ordinal();
@@ -209,7 +233,7 @@ public class Main implements Runnable{
 		return monthDate;
 	}
         
-        //vyplnìní okýnek datumem
+        //vypln?ní okýnek datumem
 	private void fillDays(LocalDate monthDate, int year, int month, int day) {
 		for (int j = 0; j < dayLabell.length; j++) {
 			for (int i = 0; i < dayLabell[j].length; i++) {

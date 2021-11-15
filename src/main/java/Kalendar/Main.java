@@ -23,9 +23,9 @@ public class Main implements Runnable{
 	}
 	private static final String[] DAY_NAMES = { "Monday", "Tuesday",
 			"Wednesday", "Thursday", "Friday", "Saturday","Sunday" };
-	private static final String[] MONTH_NAMES = { "January", "February", 
-			"March", "April", "May", "June", "July",
-			"August", "September", "October", "November", "December" };
+	private static final String[] MONTH_NAMES = { "January  ", "February ", 
+			"March    ", "April    ", "May      ", "June     ", "July     ",
+			"August   ", "September", "October  ", "November ", "December  " };
 	private Color backgroundColor;
 	private JComboBox<String> monthComboBox;
 	
@@ -42,6 +42,7 @@ public class Main implements Runnable{
 	}
 	@Override
 	public void run() {
+                Poznamky poznamky = new Poznamky();
 		JFrame frame = new JFrame("Calendar");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(createTitlePanel(), BorderLayout.NORTH);
@@ -51,12 +52,13 @@ public class Main implements Runnable{
                 frame.setResizable(false);
 		//frame.setLocationByPlatform(true);
 		frame.setVisible(true);
+               
 	}
 	
 	
 	private JPanel createTitlePanel() {
 		JPanel panel = new JPanel();
-                panel.setLayout(new GridLayout(1,6));
+                
 		Font font = panel.getFont().deriveFont(40f).deriveFont(Font.BOLD);
 		titleLabel = new JLabel(" ");
 		titleLabel.setFont(font);
@@ -101,8 +103,12 @@ public class Main implements Runnable{
 				}
 				monthComboBox.setSelectedIndex(month);
 				updateDayLabels();
+                                
+                                
 			}
+                        
 		});
+                        
                 JButton print = new JButton("Print to pdf");
                 
                 print.setPreferredSize(new Dimension(150,40));
@@ -160,6 +166,19 @@ public class Main implements Runnable{
                                 dayLabell[j][i].setForeground(backgroundColor.GRAY);
 				dayLabell[j][i].setHorizontalAlignment(JButton.CENTER);
 				dayPanel.add(dayLabell[j][i], BorderLayout.CENTER);
+                                
+                                dayLabell[j][i].addActionListener(new ActionListener() {
+                                @Override
+                                  public void actionPerformed(ActionEvent e) {
+                                      
+                                      
+                                String monthh = (String) monthComboBox.getSelectedItem();
+                                 
+                                System.out.println(monthh);
+                                Poznamky poznamky = new Poznamky();
+                                poznamky.setVisible(true);
+   }    //String den = (String) monthComboBox.getSelectedIndex();
+                                });       
 				panel.add(dayPanel);
 			}
 		}
@@ -177,6 +196,7 @@ public class Main implements Runnable{
 			fillDays(monthDate, year, month, day);	
 			String title = MONTH_NAMES[month] + " " + year;
 			titleLabel.setText(title);
+                        System.out.println(day);
 		} 
 	}
         //vyplnìní do správných okýnek

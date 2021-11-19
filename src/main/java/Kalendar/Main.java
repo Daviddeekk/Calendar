@@ -37,17 +37,19 @@ public class Main implements Runnable{
 	private JTextField dayField;
 	private JTextField yearField;
 	private LocalDate calendarDate;
-        public String monthh;
+        
         public int denn;
+        
+        Poznamky poznamky;
         
 	public Main() {
 		this.calendarDate = LocalDate.now();
-                
+                poznamky = new Poznamky();
                 
 	}
 	@Override
 	public void run() {
-                Poznamky poznamky = new Poznamky();
+                
 		JFrame frame = new JFrame("Calendar");
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.add(createTitlePanel(), BorderLayout.NORTH);
@@ -157,7 +159,7 @@ public class Main implements Runnable{
 		return panel;
 	}
         //vytvo?ení okýnek
-	private JPanel createDayLabels() {
+	public JPanel createDayLabels() {
 		JPanel panel = new JPanel(new GridLayout(0, DAY_NAMES.length , 5, 5));
 		dayLabell = new JButton[6][DAY_NAMES.length];
 		Font dayFont = panel.getFont().deriveFont(48f).deriveFont(Font.BOLD); 
@@ -182,7 +184,8 @@ public class Main implements Runnable{
                                       
                                   
                                  int year = valueOf(yearField.getText().trim());     
-                                 monthh = (String) monthComboBox.getSelectedItem();
+                                 String monthh = (String) monthComboBox.getSelectedItem();
+                                 poznamky.setMesic(monthh);
                                  int montt = monthComboBox.getSelectedIndex();
                                 
                                  denn =Integer.parseInt(den); //int den
@@ -196,6 +199,7 @@ public class Main implements Runnable{
                                 System.out.println(year);
                                 Poznamky poznamky = new Poznamky();
                                 poznamky.setVisible(true);
+                                poznamky.repaint();
                                 
                                 }    
                                 });  

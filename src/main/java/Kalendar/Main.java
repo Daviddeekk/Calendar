@@ -8,10 +8,13 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.time.LocalDate;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -41,16 +44,21 @@ public class Main implements Runnable{
         public int denn;
         
         Poznamky poznamky;
-        
+         Dialog dialog;
+         
 	public Main() {
 		this.calendarDate = LocalDate.now();
                 poznamky = new Poznamky();
+              
                 
 	}
 	@Override
 	public void run() {
-                
+                   
 		JFrame frame = new JFrame("Calendar");
+                   dialog = new Dialog(frame,true);
+                   dialog.setResizable(false);
+                   poznamky.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.add(createTitlePanel(), BorderLayout.NORTH);
 		frame.add(createCalendarPanel(), BorderLayout.CENTER);
@@ -174,35 +182,63 @@ public class Main implements Runnable{
                                 dayLabell[j][i].setForeground(backgroundColor.GRAY);
 				dayLabell[j][i].setHorizontalAlignment(JButton.CENTER);
 				
-                                
-                                dayLabell[j][i].addActionListener(new ActionListener() {
-                                @Override
-                                  public void actionPerformed(ActionEvent e) {
-                                    
-                                      JButton buttonn = (JButton) e.getSource(); 
+                               
+                                dayLabell[j][i].addMouseListener(new MouseListener() {
+                                    @Override
+                                    public void mouseClicked(MouseEvent e) {
+                                        
+                                    }
+
+                                    @Override
+                                    public void mousePressed(MouseEvent e) {
+                                        JButton buttonn = (JButton) e.getSource(); 
                                       String den = buttonn.getText();
                                       
                                   
-                                 int year = valueOf(yearField.getText().trim());     
-                                 String monthh = (String) monthComboBox.getSelectedItem();
-                                 poznamky.setMesic(monthh);
-                                 int montt = monthComboBox.getSelectedIndex();
-                                
+                                 int year = valueOf(yearField.getText().trim());    //int rok
+                                 String monthh = (String) monthComboBox.getSelectedItem(); //string mìsíc
                                  denn =Integer.parseInt(den); //int den
+                                 int montt = monthComboBox.getSelectedIndex();//èíslo mìsíce
+                                 
+                                
+                                poznamky.setMesic(monthh, year, denn);
+                                dialog.setMesic(monthh, year, denn);
+                                 
+                                 
+                                 
+                                
+                                //int den
                                //String dayy = dayLabell[j][i].get();
                                 
                                  
                                
-                                System.out.println(denn);
-                                // System.out.println(dayy);
-                                System.out.println(monthh );
-                                System.out.println(year);
-                                Poznamky poznamky = new Poznamky();
-                                poznamky.setVisible(true);
-                                poznamky.repaint();
+                               
                                 
-                                }    
-                                });  
+                                if(e.getButton()==1){
+                                poznamky.setVisible(true);
+                                }
+                                else{
+                                System.out.println("Vlož poznámku");
+                                 dialog.setVisible(true);
+                                }
+                                    }
+                                      
+                                    @Override
+                                    public void mouseReleased(MouseEvent e) {
+                                        
+                                    }
+
+                                    @Override
+                                    public void mouseEntered(MouseEvent e) {
+                                        
+                                    }
+
+                                    @Override
+                                    public void mouseExited(MouseEvent e) {
+                                        
+                                    }
+                                });
+                                 
                                 dayPanel.add(dayLabell[j][i], BorderLayout.CENTER);
 				panel.add(dayPanel);
 			}

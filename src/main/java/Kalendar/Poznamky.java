@@ -24,7 +24,7 @@ public class Poznamky extends javax.swing.JFrame {
    // int day = main.denn;
     //String Den = String.valueOf(day);
     
-    String Den = "sdfas" ;
+   
     
     public Poznamky() {
         initComponents();
@@ -48,23 +48,23 @@ public class Poznamky extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("blas");
+        jLabel1.setText("datum");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(218, 218, 218)
-                .addComponent(jLabel1)
-                .addContainerGap(248, Short.MAX_VALUE))
+                .addGap(55, 55, 55)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(308, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(158, 158, 158)
-                .addComponent(jLabel1)
-                .addContainerGap(174, Short.MAX_VALUE))
+                .addGap(38, 38, 38)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(283, Short.MAX_VALUE))
         );
 
         pack();
@@ -113,10 +113,12 @@ public class Poznamky extends javax.swing.JFrame {
         });
     }
     
-    public void setMesic(String newMesic){
-        System.out.println(newMesic);
+    
+    public void setMesic(String newMesic, int year, int denn){
+      
         String mesic = newMesic;
-         jLabel1.setText(mesic +"ahoj");
+         jLabel1.setText(denn+". " + mesic + year);
+         
          jLabel1.paintImmediately(jLabel1.getVisibleRect());
          System.out.println(jLabel1.getText());
          this.repaint();
